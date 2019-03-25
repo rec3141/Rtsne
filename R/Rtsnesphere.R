@@ -80,46 +80,46 @@
 #' 
 #' # Set a seed if you want reproducible results
 #' set.seed(42)
-#' tsne_out <- Rtsne(iris_matrix,pca=FALSE,perplexity=30,theta=0.0) # Run TSNE
+#' tsne_out <- Rtsnesphere(iris_matrix,pca=FALSE,perplexity=30,theta=0.0) # Run TSNE
 #' 
 #' # Show the objects in the 2D tsne representation
 #' plot(tsne_out$Y,col=iris_unique$Species, asp=1)
 #' 
 #' # data.frame as input
-#' tsne_out <- Rtsne(iris_unique,pca=FALSE, theta=0.0)
+#' tsne_out <- Rtsnesphere(iris_unique,pca=FALSE, theta=0.0)
 #' 
 #' # Using a dist object
 #' set.seed(42)
-#' tsne_out <- Rtsne(dist(normalize_input(iris_matrix)), theta=0.0)
+#' tsne_out <- Rtsnesphere(dist(normalize_input(iris_matrix)), theta=0.0)
 #' plot(tsne_out$Y,col=iris_unique$Species, asp=1)
 #' 
 #' set.seed(42)
-#' tsne_out <- Rtsne(as.matrix(dist(normalize_input(iris_matrix))),theta=0.0)
+#' tsne_out <- Rtsnesphere(as.matrix(dist(normalize_input(iris_matrix))),theta=0.0)
 #' plot(tsne_out$Y,col=iris_unique$Species, asp=1)
 #' 
 #' # Supplying starting positions (example: continue from earlier embedding)
 #' set.seed(42)
-#' tsne_part1 <- Rtsne(iris_unique[,1:4], theta=0.0, pca=FALSE, max_iter=350)
-#' tsne_part2 <- Rtsne(iris_unique[,1:4], theta=0.0, pca=FALSE, max_iter=650, Y_init=tsne_part1$Y)
+#' tsne_part1 <- Rtsnesphere(iris_unique[,1:4], theta=0.0, pca=FALSE, max_iter=350)
+#' tsne_part2 <- Rtsnesphere(iris_unique[,1:4], theta=0.0, pca=FALSE, max_iter=650, Y_init=tsne_part1$Y)
 #' plot(tsne_part2$Y,col=iris_unique$Species, asp=1)
 #' \dontrun{
 #' # Fast PCA and multicore
 #' 
-#' tsne_out <- Rtsne(iris_matrix, theta=0.1, partial_pca = TRUE, initial_dims=3)
-#' tsne_out <- Rtsne(iris_matrix, theta=0.1, num_threads = 2)
+#' tsne_out <- Rtsnesphere(iris_matrix, theta=0.1, partial_pca = TRUE, initial_dims=3)
+#' tsne_out <- Rtsnesphere(iris_matrix, theta=0.1, num_threads = 2)
 #' }
 #' @useDynLib Rtsne, .registration = TRUE
 #' @import Rcpp
 #' @importFrom stats model.matrix na.fail prcomp
 #' 
 #' @export
-Rtsne <- function (X, ...) {
-  UseMethod("Rtsne", X)
+Rtsnesphere <- function (X, ...) {
+  UseMethod("Rtsnesphere", X)
 }
 
-#' @describeIn Rtsne Default Interface
+#' @describeIn Rtsnesphere Default Interface
 #' @export
-Rtsne.default <- function(X, dims=2, initial_dims=50, 
+Rtsnesphere.default <- function(X, dims=2, initial_dims=50, 
                           perplexity=30, theta=0.5, 
                           check_duplicates=TRUE, 
                           pca=TRUE, partial_pca=FALSE, max_iter=1000,verbose=getOption("verbose", FALSE), 
@@ -168,7 +168,7 @@ Rtsne.default <- function(X, dims=2, initial_dims=50,
     }
   }
  
-  out <- do.call(Rtsne_cpp, c(list(X=X, distance_precomputed=is_distance, num_threads=num_threads), tsne.args))
+  out <- do.call(Rtsnesphere_cpp, c(list(X=X, distance_precomputed=is_distance, num_threads=num_threads), tsne.args))
   out$Y <- t(out$Y) # Transposing back.
   info <- list(N=ncol(X))
   if (!is_distance) { out$origD <- nrow(X) } # 'origD' is unknown for distance matrices.
@@ -177,16 +177,16 @@ Rtsne.default <- function(X, dims=2, initial_dims=50,
   out
 }
 
-#' @describeIn Rtsne tsne on given dist object
+#' @describeIn Rtsnesphere tsne on given dist object
 #' @export
-Rtsne.dist <- function(X,...,is_distance=TRUE) {
+Rtsnesphere.dist <- function(X,...,is_distance=TRUE) {
   X <- as.matrix(na.fail(X))
-  Rtsne(X, ..., is_distance=is_distance)
+  Rtsnesphere(X, ..., is_distance=is_distance)
 }
 
-#' @describeIn Rtsne tsne on data.frame
+#' @describeIn Rtsnesphere tsne on data.frame
 #' @export
-Rtsne.data.frame <- function(X,...) {
+Rtsnesphere.data.frame <- function(X,...) {
   X <- model.matrix(~.-1,na.fail(X))
-  Rtsne(X, ...)
+  Rtsnesphere(X, ...)
 }
