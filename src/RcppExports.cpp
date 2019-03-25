@@ -72,8 +72,8 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_Rtsnesphere_Rtsnesphere_cpp", (DL_FUNC) &_Rtsnesphere_Rtsnesphere_cpp, 16},
-    {"_Rtsnesphere_Rtsnesphere_nn_cpp", (DL_FUNC) &_Rtsnesphere_Rtsnesphere_nn_cpp, 16},
+    {"_Rtsnesphere_Rtsnesphere_cpp", (DL_FUNC) &_Rtsnesphere_Rtsnesphere_cpp, 17},
+    {"_Rtsnesphere_Rtsnesphere_nn_cpp", (DL_FUNC) &_Rtsnesphere_Rtsnesphere_nn_cpp, 17},
     {"_Rtsnesphere_normalize_input_cpp", (DL_FUNC) &_Rtsnesphere_normalize_input_cpp, 1},
     {NULL, NULL, 0}
 };
