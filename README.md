@@ -2,7 +2,7 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 [![CRAN
-version](http://www.r-pkg.org/badges/version/Rtsne)](https://cran.r-project.org/package=Rtsnespher/)
+version](http://www.r-pkg.org/badges/version/Rtsne)](https://cran.r-project.org/package=Rtsnesphere/)
 [![Travis-CI Build
 Status](https://travis-ci.org/rec3141/Rtsne.png?branch=master)](https://travis-ci.org/rec3141/Rtsnesphere)
 [![codecov.io](https://codecov.io/github/rec3141/Rtsnesphere/coverage.svg?branch=master)](https://codecov.io/github/rec3141/Rtsnesphere?branch=master)
