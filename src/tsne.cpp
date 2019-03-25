@@ -854,6 +854,58 @@ double TSNE<NDims>::randn() {
 	return x;
 }
 
+// Spherical Embedding
+template <int NDims>
+void TSNE<NDims>::spherembed(double* X, unsigned int N, int D) {
+
+	// square data
+   for(unsigned int i = 0; i < N * D; i++) X[d] = X[d]*X[d];
+   
+	// row sums
+	double* rowsum = (double*) calloc(D, sizeof(double));
+	int nD = 0;
+	  for(unsigned int n = 0; n < N; n++) {
+		for(int d = 0; d < D; d++) {
+		  rowsum[d] += X[nD + d];
+		}
+		nD += D;
+	  }
+
+  for(int d = 0; d < D; d++) {
+	rowsum[d] = sqrt(rowsum[d]);
+  }
+
+  // Compute rowsum mean
+  double* r_mean = 0;
+  for(int d = 0; d < D; d++) {
+	r_mean += rowsum[d];
+  }
+  r_mean /= (double) N;
+
+	double* rsm = (double*) calloc(D, sizeof(double));
+	rsm = r_mean;
+
+  for(int d = 0; d < D; d++) {
+	rsm[d] = rsm/rowsum[d];
+  }
+	
+	
+	// Compute sweep
+	nD = 0;
+  for(unsigned int n = 0; n < N; n++) {
+    for(int d = 0; d < D; d++) {
+      X[nD + d] = X[nD + d] * rsm[d];
+    }
+    nD += D;
+  }
+
+  free(r_mean); mean = NULL;
+  free(rsm); rsm = NULL;
+  free(rowsum); rowsum = NULL;
+}
+
+
+
 // declare templates explicitly
 template class TSNE<1>;
 template class TSNE<2>;
