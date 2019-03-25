@@ -881,7 +881,7 @@ void TSNE<NDims>::spherembed(double* X, unsigned int N, int D) {
   }
 
   // Compute rowsum mean
-  double* r_mean = 0;
+  double r_mean;
   for(int d = 0; d < D; d++) {
 	r_mean = r_mean + rowsum[d];
   }
@@ -904,7 +904,7 @@ void TSNE<NDims>::spherembed(double* X, unsigned int N, int D) {
     nD += D;
   }
 
-  free(r_mean); mean = NULL;
+  free(r_mean); r_mean = NULL;
   free(rsm); rsm = NULL;
   free(rowsum); rowsum = NULL;
 }
