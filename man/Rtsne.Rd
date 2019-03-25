@@ -18,7 +18,7 @@ Rtsne(X, ...)
   normalize = TRUE, stop_lying_iter = ifelse(is.null(Y_init), 250L,
   0L), mom_switch_iter = ifelse(is.null(Y_init), 250L, 0L),
   momentum = 0.5, final_momentum = 0.8, eta = 200,
-  exaggeration_factor = 12, num_threads = 1, ...)
+  exaggeration_factor = 12, num_threads = 1, spherical = TRUE, ...)
 
 \method{Rtsne}{dist}(X, ..., is_distance = TRUE)
 
@@ -29,7 +29,7 @@ Rtsne_neighbors(index, distance, dims = 2, perplexity = 30,
   FALSE), Y_init = NULL, stop_lying_iter = ifelse(is.null(Y_init),
   250L, 0L), mom_switch_iter = ifelse(is.null(Y_init), 250L, 0L),
   momentum = 0.5, final_momentum = 0.8, eta = 200,
-  exaggeration_factor = 12, num_threads = 1, ...)
+  exaggeration_factor = 12, num_threads = 1, spherical = TRUE, ...)
 }
 \arguments{
 \item{X}{matrix; Data matrix (each row is an observation, each column is a variable)}
@@ -81,6 +81,8 @@ Rtsne_neighbors(index, distance, dims = 2, perplexity = 30,
 \item{index}{integer matrix; Each row contains the identity of the nearest neighbors for each observation}
 
 \item{distance}{numeric matrix; Each row contains the distance to the nearest neighbors in \code{index} for each observation}
+
+\item{spherical}{logical; Should the embedding be done with the Spherical constraint (default: TRUE)}
 }
 \value{
 List with the following elements:
