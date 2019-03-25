@@ -18,7 +18,7 @@ Rtsne(X, ...)
   normalize = TRUE, stop_lying_iter = ifelse(is.null(Y_init), 250L,
   0L), mom_switch_iter = ifelse(is.null(Y_init), 250L, 0L),
   momentum = 0.5, final_momentum = 0.8, eta = 200,
-  exaggeration_factor = 12, num_threads = 1, spherical = TRUE, ...)
+  exaggeration_factor = 12, num_threads = 1, spherical = FALSE, ...)
 
 \method{Rtsne}{dist}(X, ..., is_distance = TRUE)
 
