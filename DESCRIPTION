@@ -4,7 +4,7 @@ Title: T-Distributed Stochastic Neighbor Embedding using a Barnes-Hut Implementa
 Version: 0.16
 Authors@R: c(
     person("Eric", "Collins", ,"rec3141@gmail.com", role = c("aut", "cre")),
-    person("Jesse", "Krijthe", ,"jkrijthe@gmail.com", comment = "Author of original Rcpp code"),
+    person("Jesse", "Krijthe", ,"jkrijthe@gmail.com", role = c("cph"), comment = "Author of original Rcpp code"),
     person("Laurens", "van der Maaten", role = c("cph"), comment = "Author of original C++ code")
     )
 Description: An R wrapper around the fast T-distributed Stochastic
