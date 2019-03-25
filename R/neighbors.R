@@ -17,7 +17,7 @@ Rtsnesphere_neighbors <- function(index, distance, dims=2, perplexity=30, theta=
             momentum=momentum, final_momentum=final_momentum, eta=eta, exaggeration_factor=exaggeration_factor, spherical=spherical)
 
     # Transposing is necessary for fast column-major access to each sample, -1 for zero-indexing.
-    out <- do.call(Rtsne_nn_cpp, c(list(nn_dex=t(index - 1L), nn_dist=t(distance), num_threads=num_threads), tsne.args))
+    out <- do.call(Rtsnesphere_nn_cpp, c(list(nn_dex=t(index - 1L), nn_dist=t(distance), num_threads=num_threads), tsne.args))
     out$Y <- t(out$Y) # Transposing back.
     c(list(N=nrow(index)), out, .clear_unwanted_params(tsne.args))
 }
