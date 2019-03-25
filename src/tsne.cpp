@@ -881,21 +881,20 @@ void TSNE<NDims>::spherembed(double* X, unsigned int N, int D) {
   }
 
   // Compute rowsum mean
-  double r_mean;
+  double r_mean = 0;
   for(int d = 0; d < D; d++) {
 	r_mean = r_mean + rowsum[d];
   }
   r_mean = r_mean / (double) N;
 
-	double* rsm = (double*) calloc(D, sizeof(double));
+  double* rsm = (double*) calloc(D, sizeof(double));
 
   for(int d = 0; d < D; d++) {
-	rsm[d] = rsm[d] / rowsum[d];
+	rsm[d] = r_mean / rowsum[d];
   }
-	
-	
-	// Compute sweep
-	nD = 0;
+
+  // Compute sweep
+  nD = 0;
   for(unsigned int n = 0; n < N; n++) {
     for(int d = 0; d < D; d++) {
       X[nD + d] = X[nD + d] * rsm[d];
@@ -903,6 +902,8 @@ void TSNE<NDims>::spherembed(double* X, unsigned int N, int D) {
     nD += D;
   }
 
+free(rsm); rsm = NULL;
+free(rowsum); rowsum = NULL;
 }
 
 
