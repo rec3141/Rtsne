@@ -44,10 +44,10 @@ class TSNE
 {    
 public:
     TSNE(double perplexity, double theta, bool verbose, int max_iter, bool init, int stop_lying_iter, 
-       int mom_switch_iter, double momentum, double final_momentum, double eta, double exaggeration_factor,int num_threads);
+       int mom_switch_iter, double momentum, double final_momentum, double eta, double exaggeration_factor,int num_threads, bool spherical);
 
     void run(double* X, unsigned int N, int D, double* Y, bool distance_precomputed, double* cost, double* itercost);
-    void run(const int* nn_index, const double* nn_dist, unsigned int N, int K, double* Y, double* cost, double* itercost);
+    void run(const int* nn_index, const double* nn_dist, unsigned int N, int K, double* Y, double* cost, double* itercost, bool spherical);
 
 private:
     void symmetrizeMatrix(unsigned int N); 
@@ -60,6 +60,7 @@ private:
     void getCost(double* P, double* Y, unsigned int N, int D, double* costs);
     void getCost(unsigned int* row_P, unsigned int* col_P, double* val_P, double* Y, unsigned int N, int D, double theta, double* costs);
     void zeroMean(double* X, unsigned int N, int D);
+    void spherembed(double* X, unsigned int N, int D);
 
     void computeGaussianPerplexity(double* X, unsigned int N, int D, bool distance_precomputed);
     template<double (*distance)( const DataPoint&, const DataPoint& )>
@@ -76,7 +77,7 @@ private:
     // Member variables.
     double perplexity, theta, momentum, final_momentum, eta, exaggeration_factor;
     int max_iter, stop_lying_iter, mom_switch_iter, num_threads;
-    bool verbose, init, exact;
+    bool verbose, init, exact, spherical;
 
     std::vector<unsigned int> row_P, col_P;
     std::vector<double> val_P, P;
