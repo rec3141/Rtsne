@@ -57,9 +57,9 @@ using namespace std;
 
 template <int NDims>
 TSNE<NDims>::TSNE(double Perplexity, double Theta, bool Verbose, int Max_iter, bool Init, int Stop_lying_iter,
-        int Mom_switch_iter, double Momentum, double Final_momentum, double Eta, double Exaggeration_factor, int Num_threads) :
+        int Mom_switch_iter, double Momentum, double Final_momentum, double Eta, double Exaggeration_factor, int Num_threads, bool Spherical) :
     perplexity(Perplexity), theta(Theta), momentum(Momentum), final_momentum(Final_momentum), eta(Eta), exaggeration_factor(Exaggeration_factor),
-    max_iter(Max_iter), stop_lying_iter(Stop_lying_iter), mom_switch_iter(Mom_switch_iter), num_threads(Num_threads),
+    max_iter(Max_iter), stop_lying_iter(Stop_lying_iter), mom_switch_iter(Mom_switch_iter), num_threads(Num_threads), spherical(Spherical),
     verbose(Verbose), init(Init), exact(theta==.0) {
 
     #ifdef _OPENMP
@@ -77,7 +77,7 @@ TSNE<NDims>::TSNE(double Perplexity, double Theta, bool Verbose, int Max_iter, b
 
 // Perform t-SNE
 template <int NDims>
-void TSNE<NDims>::run(double* X, unsigned int N, int D, double* Y, bool distance_precomputed, double* cost, double* itercost) {
+void TSNE<NDims>::run(double* X, unsigned int N, int D, double* Y, bool distance_precomputed, double* cost, double* itercost, bool spherical) {
     if(N - 1 < 3 * perplexity) { Rcpp::stop("Perplexity too large for the number of data points!\n"); }
     if (verbose) Rprintf("Using no_dims = %d, perplexity = %f, and theta = %f\n", NDims, perplexity, theta);
     if (verbose) Rprintf("Computing input similarities...\n");
@@ -126,13 +126,13 @@ void TSNE<NDims>::run(double* X, unsigned int N, int D, double* Y, bool distance
         else Rprintf("Done in %4.2f seconds (sparsity = %f)!\nLearning embedding...\n", (float) (end - start) / CLOCKS_PER_SEC, (double) row_P[N] / ((double) N * (double) N));
     }
 
-    trainIterations(N, Y, cost, itercost);
+    trainIterations(N, Y, cost, itercost, spherical);
     return;
 }
 
 // Perform t-SNE with nearest neighbor results.
 template<int NDims>
-void TSNE<NDims>::run(const int* nn_index, const double* nn_dist, unsigned int N, int K, double* Y, double* cost, double* itercost) {
+void TSNE<NDims>::run(const int* nn_index, const double* nn_dist, unsigned int N, int K, double* Y, double* cost, double* itercost, bool spherical) {
     if(N - 1 < 3 * perplexity) { Rcpp::stop("Perplexity too large for the number of data points!\n"); }
     if (verbose) Rprintf("Using no_dims = %d, perplexity = %f, and theta = %f\n", NDims, perplexity, theta);
     if (verbose) Rprintf("Computing input similarities...\n");
@@ -153,13 +153,13 @@ void TSNE<NDims>::run(const int* nn_index, const double* nn_dist, unsigned int N
         else Rprintf("Done in %4.2f seconds (sparsity = %f)!\nLearning embedding...\n", (float) (end - start) / CLOCKS_PER_SEC, (double) row_P[N] / ((double) N * (double) N));
     }
 
-    trainIterations(N, Y, cost, itercost);
+    trainIterations(N, Y, cost, itercost, spherical);
     return;
 }
 
 // Perform main training loop
 template<int NDims>
-void TSNE<NDims>::trainIterations(unsigned int N, double* Y, double* cost, double* itercost) {
+void TSNE<NDims>::trainIterations(unsigned int N, double* Y, double* cost, double* itercost, bool spherical) {
     // Allocate some memory
     double* dY    = (double*) malloc(N * NDims * sizeof(double));
     double* uY    = (double*) malloc(N * NDims * sizeof(double));
@@ -203,6 +203,11 @@ void TSNE<NDims>::trainIterations(unsigned int N, double* Y, double* cost, doubl
         // Make solution zero-mean
         zeroMean(Y, N, NDims);
 
+	// Do Spherical Embedding
+	if(spherical == true) {
+	  spherembed(Y, N, NDims);
+	}
+	
         // Print out progress
         if((iter > 0 && (iter+1) % 50 == 0) || iter == max_iter - 1) {
             end = clock();
