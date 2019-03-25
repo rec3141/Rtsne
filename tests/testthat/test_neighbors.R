@@ -1,4 +1,4 @@
-context("Rtsne neighbor input")
+context("Rtsnesphere neighbor input")
 
 set.seed(101)
 # The original iris_matrix has a few tied distances, which alters the order of nearest neighbours.
@@ -21,7 +21,7 @@ NNFUN <- function(D, K)
     list(index=all.indices, distance=all.distances)
 }
 
-test_that("Rtsne with nearest-neighbor input compares to distance matrix input", {
+test_that("Rtsnesphere with nearest-neighbor input compares to distance matrix input", {
     D <- as.matrix(dist(simdata))
     out <- NNFUN(D, 90) # 3 * perplexity
     all.indices <- out$index
@@ -31,18 +31,18 @@ test_that("Rtsne with nearest-neighbor input compares to distance matrix input",
     # This results in different random initialization of Y.
     # Thus, we need to supply a pre-computed Y as well.
     Y_in <- matrix(runif(nrow(simdata)*2), ncol=2)
-    out <- Rtsne_neighbors(all.indices, all.distances, Y_init=Y_in, perplexity=30, max_iter=1)
-    blah <- Rtsne(D, is_distance=TRUE, Y_init=Y_in, perplexity=30, max_iter=1)
+    out <- Rtsnesphere_neighbors(all.indices, all.distances, Y_init=Y_in, perplexity=30, max_iter=1)
+    blah <- Rtsnesphere(D, is_distance=TRUE, Y_init=Y_in, perplexity=30, max_iter=1)
     expect_equal(out$Y, blah$Y)
 
     # Trying again with a different number of neighbors.
     Y_in <- matrix(runif(nrow(simdata)*2), ncol=2)
-    out <- Rtsne_neighbors(all.indices[,1:30], all.distances[,1:30], Y_init=Y_in, perplexity=10)
-    blah <- Rtsne(D, is_distance=TRUE, Y_init=Y_in, perplexity=10)
+    out <- Rtsnesphere_neighbors(all.indices[,1:30], all.distances[,1:30], Y_init=Y_in, perplexity=10)
+    blah <- Rtsnesphere(D, is_distance=TRUE, Y_init=Y_in, perplexity=10)
     expect_equal(out$Y, blah$Y)
 })
 
-test_that("Rtsne with nearest-neighbor input behaves upon normalization", {
+test_that("RtsneRtsnesphere with nearest-neighbor input behaves upon normalization", {
     D <- as.matrix(dist(normalize_input(simdata)))
     out <- NNFUN(D, 90) # 3 * perplexity
     all.indices <- out$index
@@ -52,18 +52,18 @@ test_that("Rtsne with nearest-neighbor input behaves upon normalization", {
     # This results in different random initialization of Y.
     # Thus, we need to supply a pre-computed Y as well.
     Y_in <- matrix(runif(nrow(simdata)*2), ncol=2)
-    out <- Rtsne_neighbors(all.indices, all.distances, Y_init=Y_in, perplexity=30, max_iter=1)
-    blah <- Rtsne(D, is_distance=TRUE, Y_init=Y_in, perplexity=30, max_iter=1)
+    out <- Rtsnesphere_neighbors(all.indices, all.distances, Y_init=Y_in, perplexity=30, max_iter=1)
+    blah <- Rtsnesphere(D, is_distance=TRUE, Y_init=Y_in, perplexity=30, max_iter=1)
     expect_equal(out$Y, blah$Y)
 
     # Trying again with a different number of neighbors.
     Y_in <- matrix(runif(nrow(simdata)*2), ncol=2)
-    out <- Rtsne_neighbors(all.indices[,1:30], all.distances[,1:30], Y_init=Y_in, perplexity=10)
-    blah <- Rtsne(D, is_distance=TRUE, Y_init=Y_in, perplexity=10)
+    out <- Rtsnesphere_neighbors(all.indices[,1:30], all.distances[,1:30], Y_init=Y_in, perplexity=10)
+    blah <- Rtsnesphere(D, is_distance=TRUE, Y_init=Y_in, perplexity=10)
     expect_equal(out$Y, blah$Y)
 })
 
-test_that("Rtsne with nearest-neighbor input gives no errors for no_dims 1 and 3", {
+test_that("RtsnRtsnespheree with nearest-neighbor input gives no errors for no_dims 1 and 3", {
   D <- as.matrix(dist(simdata))
   out <- NNFUN(D, 90) # 3 * perplexity
   all.indices <- out$index
@@ -73,20 +73,20 @@ test_that("Rtsne with nearest-neighbor input gives no errors for no_dims 1 and 3
   # This results in different random initialization of Y.
   # Thus, we need to supply a pre-computed Y as well.
   Y_in <- matrix(runif(nrow(simdata)*1), ncol=1)
-  out <- Rtsne_neighbors(all.indices, all.distances, Y_init=Y_in, perplexity=30, max_iter=1, dims = 1)
-  blah <- Rtsne(D, is_distance=TRUE, Y_init=Y_in, perplexity=30, max_iter=1,dims = 1)
+  out <- Rtsnesphere_neighbors(all.indices, all.distances, Y_init=Y_in, perplexity=30, max_iter=1, dims = 1)
+  blah <- RtsneRtsnesphere(D, is_distance=TRUE, Y_init=Y_in, perplexity=30, max_iter=1,dims = 1)
   expect_equal(out$Y, blah$Y)
   
   Y_in <- matrix(runif(nrow(simdata)*3), ncol=3)
-  out <- Rtsne_neighbors(all.indices, all.distances, Y_init=Y_in, perplexity=30, max_iter=1, dims = 3)
-  blah <- Rtsne(D, is_distance=TRUE, Y_init=Y_in, perplexity=30, max_iter=1,dims = 3)
+  out <- Rtsnesphere_neighbors(all.indices, all.distances, Y_init=Y_in, perplexity=30, max_iter=1, dims = 3)
+  blah <- RtsneRtsnesphere(D, is_distance=TRUE, Y_init=Y_in, perplexity=30, max_iter=1,dims = 3)
   expect_equal(out$Y, blah$Y)
 })
 
 test_that("error conditions are correctly explored", {
-    expect_error(Rtsne_neighbors("yay", matrix(0, 50, 10), Y_init=Y_in, perplexity=10), "matrix")
-    expect_error(Rtsne_neighbors(matrix(0L, 50, 5), matrix(0, 50, 10), Y_init=Y_in, perplexity=10), "same dimensions")
-    expect_error(Rtsne_neighbors(matrix(0L, 50, 10), matrix(0, 50, 10), Y_init=Y_in, perplexity=10), "invalid indices")
-    expect_error(Rtsne_neighbors(matrix(51L, 50, 10), matrix(0, 50, 10), Y_init=Y_in, perplexity=10), "invalid indices")
-    expect_error(Rtsne_neighbors(matrix(NA_real_, 50, 10), matrix(0, 50, 10), Y_init=Y_in, perplexity=10), "invalid indices")
+    expect_error(Rtsnesphere_neighbors("yay", matrix(0, 50, 10), Y_init=Y_in, perplexity=10), "matrix")
+    expect_error(Rtsnesphere_neighbors(matrix(0L, 50, 5), matrix(0, 50, 10), Y_init=Y_in, perplexity=10), "same dimensions")
+    expect_error(Rtsnesphere_neighbors(matrix(0L, 50, 10), matrix(0, 50, 10), Y_init=Y_in, perplexity=10), "invalid indices")
+    expect_error(Rtsnesphere_neighbors(matrix(51L, 50, 10), matrix(0, 50, 10), Y_init=Y_in, perplexity=10), "invalid indices")
+    expect_error(Rtsnesphere_neighbors(matrix(NA_real_, 50, 10), matrix(0, 50, 10), Y_init=Y_in, perplexity=10), "invalid indices")
 })
