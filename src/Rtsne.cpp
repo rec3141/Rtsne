@@ -8,12 +8,12 @@ Rcpp::List save_results(int N, int no_dims, const std::vector<double>& Y, const 
 
 // Function that runs the Barnes-Hut implementation of t-SNE
 // [[Rcpp::export]]
-Rcpp::List Rtsne_cpp(NumericMatrix X, int no_dims, double perplexity, 
+Rcpp::List Rtsnesphere_cpp(NumericMatrix X, int no_dims, double perplexity, 
                      double theta, bool verbose, int max_iter, 
                      bool distance_precomputed, NumericMatrix Y_in, bool init, 
                      int stop_lying_iter, int mom_switch_iter,
                      double momentum, double final_momentum, 
-                     double eta, double exaggeration_factor, unsigned int num_threads) {
+                     double eta, double exaggeration_factor, unsigned int num_threads, bool spherical) {
 
     size_t N = X.ncol(), D = X.nrow();
     double * data=X.begin();
@@ -30,18 +30,18 @@ Rcpp::List Rtsne_cpp(NumericMatrix X, int no_dims, double perplexity,
     // Run tsne
     if (no_dims==1) {
       TSNE<1> tsne(perplexity, theta, verbose, max_iter, init, stop_lying_iter, mom_switch_iter, 
-              momentum, final_momentum, eta, exaggeration_factor, num_threads);
+              momentum, final_momentum, eta, exaggeration_factor, num_threads, spherical);
       tsne.run(data, N, D, Y.data(), distance_precomputed, costs.data(), itercosts.data());
     } else if (no_dims==2) {
       TSNE<2> tsne(perplexity, theta, verbose, max_iter, init, stop_lying_iter, mom_switch_iter, 
-              momentum, final_momentum, eta, exaggeration_factor, num_threads);
+              momentum, final_momentum, eta, exaggeration_factor, num_threads, spherical);
       tsne.run(data, N, D, Y.data(), distance_precomputed, costs.data(), itercosts.data());
     } else if (no_dims==3) {
       TSNE<3> tsne(perplexity, theta, verbose, max_iter, init, stop_lying_iter, mom_switch_iter, 
-              momentum, final_momentum, eta, exaggeration_factor, num_threads);
+              momentum, final_momentum, eta, exaggeration_factor, num_threads, spherical);
       tsne.run(data, N, D, Y.data(), distance_precomputed, costs.data(), itercosts.data());
     } else {
-      Rcpp::stop("Only 1, 2 or 3 dimensional output is suppported.\n");
+      Rcpp::stop("Only 1, 2 or 3 dimensional output is supported.\n");
     }
 
     return Rcpp::List::create(Rcpp::_["Y"]=Rcpp::NumericMatrix(no_dims, N, Y.data()), 
@@ -51,13 +51,13 @@ Rcpp::List Rtsne_cpp(NumericMatrix X, int no_dims, double perplexity,
 
 // Function that runs the Barnes-Hut implementation of t-SNE on nearest neighbor results.
 // [[Rcpp::export]]
-Rcpp::List Rtsne_nn_cpp(IntegerMatrix nn_dex, NumericMatrix nn_dist, 
+Rcpp::List Rtsnesphere_nn_cpp(IntegerMatrix nn_dex, NumericMatrix nn_dist, 
                      int no_dims, double perplexity, 
                      double theta, bool verbose, int max_iter, 
                      NumericMatrix Y_in, bool init, 
                      int stop_lying_iter, int mom_switch_iter,
                      double momentum, double final_momentum, 
-                     double eta, double exaggeration_factor, unsigned int num_threads) {
+                     double eta, double exaggeration_factor, unsigned int num_threads, bool spherical) {
 
     size_t N = nn_dex.ncol(), K=nn_dex.nrow(); // transposed - columns are points, rows are neighbors.
     if (verbose) Rprintf("Read the NN results for %i points successfully!\n", N);
@@ -72,15 +72,15 @@ Rcpp::List Rtsne_nn_cpp(IntegerMatrix nn_dex, NumericMatrix nn_dist,
     // Run tsne
     if (no_dims==1) {
       TSNE<1> tsne(perplexity, theta, verbose, max_iter, init, stop_lying_iter, mom_switch_iter, 
-              momentum, final_momentum, eta, exaggeration_factor, num_threads);
+              momentum, final_momentum, eta, exaggeration_factor, num_threads, spherical);
       tsne.run(nn_dex.begin(), nn_dist.begin(), N, K, Y.data(), costs.data(), itercosts.data());
     } else if (no_dims==2) {
       TSNE<2> tsne(perplexity, theta, verbose, max_iter, init, stop_lying_iter, mom_switch_iter, 
-              momentum, final_momentum, eta, exaggeration_factor, num_threads);
+              momentum, final_momentum, eta, exaggeration_factor, num_threads, spherical);
       tsne.run(nn_dex.begin(), nn_dist.begin(), N, K, Y.data(), costs.data(), itercosts.data());
     } else if (no_dims==3) {
       TSNE<3> tsne(perplexity, theta, verbose, max_iter, init, stop_lying_iter, mom_switch_iter, 
-              momentum, final_momentum, eta, exaggeration_factor, num_threads);
+              momentum, final_momentum, eta, exaggeration_factor, num_threads, spherical);
       tsne.run(nn_dex.begin(), nn_dist.begin(), N, K, Y.data(), costs.data(), itercosts.data());
     } else {
       Rcpp::stop("Only 1, 2 or 3 dimensional output is suppported.\n");
