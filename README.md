@@ -4,8 +4,8 @@
 [![CRAN
 version](http://www.r-pkg.org/badges/version/Rtsne)](https://cran.r-project.org/package=Rtsne/)
 [![Travis-CI Build
-Status](https://travis-ci.org/jkrijthe/Rtsne.png?branch=master)](https://travis-ci.org/jkrijthe/Rtsne)
-[![codecov.io](https://codecov.io/github/jkrijthe/Rtsne/coverage.svg?branch=master)](https://codecov.io/github/jkrijthe/Rtsne?branch=master)
+Status](https://travis-ci.org/rec3141/Rtsne.png?branch=master)](https://travis-ci.org/rec3141/Rtsne)
+[![codecov.io](https://codecov.io/github/rec3141/Rtsne/coverage.svg?branch=master)](https://codecov.io/github/rec3141/Rtsne?branch=master)
 [![CRAN mirror
 downloads](http://cranlogs.r-pkg.org/badges/Rtsne)](https://cran.r-project.org/package=Rtsne/)
 
@@ -31,7 +31,7 @@ example (to install, see below).
 library(Rtsne) # Load package
 iris_unique <- unique(iris) # Remove duplicates
 set.seed(42) # Sets seed for reproducibility
-tsne_out <- Rtsne(as.matrix(iris_unique[,1:4])) # Run TSNE
+tsne_out <- Rtsne(as.matrix(iris_unique[,1:4]), spherical=TRUE) # Run TSNE WITH SPHERICAL EMBEDDING
 plot(tsne_out$Y,col=iris_unique$Species,asp=1) # Plot the result
 ```
 
