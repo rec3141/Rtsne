@@ -11,7 +11,7 @@
 #' 
 #' During the minimization of the KL-divergence, the implementation uses a trick known as early exaggeration, which multiplies the \eqn{p_{ij}}'s by 12 during the first 250 iterations. This leads to tighter clustering and more distance between clusters of objects. This early exaggeration is not used when the user gives an initialization of the objects in the embedding by setting \code{Y_init}. During the early exaggeration phase, a momentum term of 0.5 is used while this is changed to 0.8 after the first 250 iterations. All these default parameters can be changed by the user.
 #' 
-#' After checking the correctness of the input, the \code{Rtsne} function (optionally) does an initial reduction of the feature space using \code{\link{prcomp}}, before calling the C++ TSNE implementation. Since R's random number generator is used, use \code{\link{set.seed}} before the function call to get reproducible results.
+#' After checking the correctness of the input, the \code{Rtsnesphere} function (optionally) does an initial reduction of the feature space using \code{\link{prcomp}}, before calling the C++ TSNE implementation. Since R's random number generator is used, use \code{\link{set.seed}} before the function call to get reproducible results.
 #' 
 #' If \code{X} is a data.frame, it is transformed into a matrix using \code{\link{model.matrix}}. If \code{X} is a \code{\link{dist}} object, it is currently first expanded into a full distance matrix.
 #' 
@@ -27,7 +27,7 @@
 #' @param partial_pca logical; Whether truncated PCA should be used to calculate principal components (requires the irlba package). This is faster for large input matrices (default: FALSE)
 #' @param max_iter integer; Number of iterations (default: 1000)
 #' @param verbose logical; Whether progress updates should be printed (default: global "verbose" option, or FALSE if that is not set)
-#' @param ... Other arguments that can be passed to Rtsne
+#' @param ... Other arguments that can be passed to Rtsnesphere
 #' @param is_distance logical; Indicate whether X is a distance matrix (experimental, default: FALSE)
 #' @param Y_init matrix; Initial locations of the objects. If NULL, random initialization will be used (default: NULL). Note that when using this, the initial stage with exaggerated perplexity values and a larger momentum term will be skipped.
 #' @param pca_center logical; Should data be centered before pca is applied? (default: TRUE)
@@ -58,18 +58,18 @@
 #' \item{exaggeration_factor}{Exaggeration factor used to multiply the P matrix in the first part of the optimization}
 #' 
 #' @section Supplying precomputed distances:
-#' If a distance matrix is already available, this can be directly supplied to \code{Rtsne} by setting \code{is_distance=TRUE}.
+#' If a distance matrix is already available, this can be directly supplied to \code{Rtsnesphere} by setting \code{is_distance=TRUE}.
 #' This improves efficiency by avoiding recalculation of distances, but requires some work to get the same results as running default \code{Rtsne} on a data matrix.
 #' Specifically, Euclidean distances should be computed from a normalized data matrix - see \code{\link{normalize_input}} for details.
 #' PCA arguments will also be ignored if \code{is_distance=TRUE}.
 #' 
-#' NN search results can be directly supplied to \code{Rtsne_neighbors} to avoid repeating the (possibly time-consuming) search.
-#' To achieve the same results as \code{Rtsne} on the data matrix, the search should be conducted on the normalized data matrix.
+#' NN search results can be directly supplied to \code{Rtsnesphere_neighbors} to avoid repeating the (possibly time-consuming) search.
+#' To achieve the same results as \code{Rtsnesphere} on the data matrix, the search should be conducted on the normalized data matrix.
 #' The number of nearest neighbors should also be equal to three-fold the \code{perplexity}, rounded down to the nearest integer.
 #' Note that pre-supplied NN results cannot be used when \code{theta=0} as they are only relevant for the approximate algorithm.
 #' 
 #' Any kind of distance metric can be used as input.
-#' In contrast, running \code{Rtsne} on a data matrix will always use Euclidean distances.
+#' In contrast, running \code{Rtsnesphere} on a data matrix will always use Euclidean distances.
 #'
 #' @references Maaten, L. Van Der, 2014. Accelerating t-SNE using Tree-Based Algorithms. Journal of Machine Learning Research, 15, p.3221-3245.
 #' @references van der Maaten, L.J.P. & Hinton, G.E., 2008. Visualizing High-Dimensional Data Using t-SNE. Journal of Machine Learning Research, 9, pp.2579-2605.
@@ -108,7 +108,7 @@
 #' tsne_out <- Rtsnesphere(iris_matrix, theta=0.1, partial_pca = TRUE, initial_dims=3)
 #' tsne_out <- Rtsnesphere(iris_matrix, theta=0.1, num_threads = 2)
 #' }
-#' @useDynLib Rtsne, .registration = TRUE
+#' @useDynLib Rtsnesphere, .registration = TRUE
 #' @import Rcpp
 #' @importFrom stats model.matrix na.fail prcomp
 #' 
@@ -173,7 +173,7 @@ Rtsnesphere.default <- function(X, dims=2, initial_dims=50,
   info <- list(N=ncol(X))
   if (!is_distance) { out$origD <- nrow(X) } # 'origD' is unknown for distance matrices.
   out <- c(info, out, .clear_unwanted_params(tsne.args))
-  class(out) <- c("Rtsne","list")
+  class(out) <- c("Rtsnesphere","list")
   out
 }
 
