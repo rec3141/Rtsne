@@ -9,22 +9,17 @@ Status](https://travis-ci.org/jkrijthe/Rtsne.png?branch=master)](https://travis-
 [![CRAN mirror
 downloads](http://cranlogs.r-pkg.org/badges/Rtsne)](https://cran.r-project.org/package=Rtsne/)
 
-# R wrapper for Van der Maaten’s Barnes-Hut implementation of t-Distributed Stochastic Neighbor Embedding
+# R wrapper for Van der Maaten’s Barnes-Hut implementation of t-Distributed Stochastic Neighbor Embedding WITH SPHERICAL EMBEDDING
 
 ## Installation
 
-To install from CRAN:
-
-``` r
-install.packages("Rtsne") # Install Rtsne package from CRAN
-```
 
 To install the latest version from the github repository,
 use:
 
 ``` r
 if(!require(devtools)) install.packages("devtools") # If not already installed
-devtools::install_github("jkrijthe/Rtsne")
+devtools::install_github("rec3141/Rtsne")
 ```
 
 ## Usage
@@ -49,6 +44,8 @@ implementation of \[2\] \[3\]. Changes were made to the original code to
 allow it to function as an R package and to add additional functionality
 and speed improvements.
 
+Spherical embedding implemented via Doubly Stochastic Neighbor Embedding on Spheres \[4\].
+
 # References
 
 \[1\] L.J.P. van der Maaten and G.E. Hinton. Visualizing
@@ -59,3 +56,5 @@ High-Dimensional Data Using t-SNE. Journal of Machine Learning Research
 International Conference on Learning Representations, 2013.
 
 \[3\] <http://homepage.tudelft.nl/19j49/t-SNE.html>
+
+\[4\] https://github.com/yaolubrain/DOSNES
