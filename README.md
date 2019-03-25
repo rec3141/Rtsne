@@ -2,12 +2,12 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 [![CRAN
-version](http://www.r-pkg.org/badges/version/Rtsne)](https://cran.r-project.org/package=Rtsne/)
+version](http://www.r-pkg.org/badges/version/Rtsne)](https://cran.r-project.org/package=Rtsnespher/)
 [![Travis-CI Build
-Status](https://travis-ci.org/rec3141/Rtsne.png?branch=master)](https://travis-ci.org/rec3141/Rtsne)
-[![codecov.io](https://codecov.io/github/rec3141/Rtsne/coverage.svg?branch=master)](https://codecov.io/github/rec3141/Rtsne?branch=master)
+Status](https://travis-ci.org/rec3141/Rtsne.png?branch=master)](https://travis-ci.org/rec3141/Rtsnesphere)
+[![codecov.io](https://codecov.io/github/rec3141/Rtsnesphere/coverage.svg?branch=master)](https://codecov.io/github/rec3141/Rtsnesphere?branch=master)
 [![CRAN mirror
-downloads](http://cranlogs.r-pkg.org/badges/Rtsne)](https://cran.r-project.org/package=Rtsne/)
+downloads](http://cranlogs.r-pkg.org/badges/Rtsnesphere)](https://cran.r-project.org/package=Rtsnesphere/)
 
 # R wrapper for Van der Maaten’s Barnes-Hut implementation of t-Distributed Stochastic Neighbor Embedding WITH SPHERICAL EMBEDDING
 
@@ -19,7 +19,7 @@ use:
 
 ``` r
 if(!require(devtools)) install.packages("devtools") # If not already installed
-devtools::install_github("rec3141/Rtsne")
+devtools::install_github("rec3141/Rtsnesphere")
 ```
 
 ## Usage
@@ -28,10 +28,10 @@ After installing the package, use the following code to run a simple
 example (to install, see below).
 
 ``` r
-library(Rtsne) # Load package
+library(Rtsnesphere) # Load package
 iris_unique <- unique(iris) # Remove duplicates
 set.seed(42) # Sets seed for reproducibility
-tsne_out <- Rtsne(as.matrix(iris_unique[,1:4]), spherical=TRUE) # Run TSNE WITH SPHERICAL EMBEDDING
+tsne_out <- Rtsnesphere(as.matrix(iris_unique[,1:4]), spherical=TRUE) # Run TSNE WITH SPHERICAL EMBEDDING
 plot(tsne_out$Y,col=iris_unique$Species,asp=1) # Plot the result
 ```
 
