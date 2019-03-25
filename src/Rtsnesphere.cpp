@@ -31,15 +31,15 @@ Rcpp::List Rtsnesphere_cpp(NumericMatrix X, int no_dims, double perplexity,
     if (no_dims==1) {
       TSNE<1> tsne(perplexity, theta, verbose, max_iter, init, stop_lying_iter, mom_switch_iter, 
               momentum, final_momentum, eta, exaggeration_factor, num_threads, spherical);
-      tsne.run(data, N, D, Y.data(), distance_precomputed, costs.data(), itercosts.data());
+      tsne.run(data, N, D, Y.data(), distance_precomputed, costs.data(), itercosts.data(), spherical);
     } else if (no_dims==2) {
       TSNE<2> tsne(perplexity, theta, verbose, max_iter, init, stop_lying_iter, mom_switch_iter, 
               momentum, final_momentum, eta, exaggeration_factor, num_threads, spherical);
-      tsne.run(data, N, D, Y.data(), distance_precomputed, costs.data(), itercosts.data());
+      tsne.run(data, N, D, Y.data(), distance_precomputed, costs.data(), itercosts.data(), spherical);
     } else if (no_dims==3) {
       TSNE<3> tsne(perplexity, theta, verbose, max_iter, init, stop_lying_iter, mom_switch_iter, 
               momentum, final_momentum, eta, exaggeration_factor, num_threads, spherical);
-      tsne.run(data, N, D, Y.data(), distance_precomputed, costs.data(), itercosts.data());
+      tsne.run(data, N, D, Y.data(), distance_precomputed, costs.data(), itercosts.data(), spherical);
     } else {
       Rcpp::stop("Only 1, 2 or 3 dimensional output is supported.\n");
     }
@@ -73,15 +73,15 @@ Rcpp::List Rtsnesphere_nn_cpp(IntegerMatrix nn_dex, NumericMatrix nn_dist,
     if (no_dims==1) {
       TSNE<1> tsne(perplexity, theta, verbose, max_iter, init, stop_lying_iter, mom_switch_iter, 
               momentum, final_momentum, eta, exaggeration_factor, num_threads, spherical);
-      tsne.run(nn_dex.begin(), nn_dist.begin(), N, K, Y.data(), costs.data(), itercosts.data());
+      tsne.run(nn_dex.begin(), nn_dist.begin(), N, K, Y.data(), costs.data(), itercosts.data(), spherical);
     } else if (no_dims==2) {
       TSNE<2> tsne(perplexity, theta, verbose, max_iter, init, stop_lying_iter, mom_switch_iter, 
               momentum, final_momentum, eta, exaggeration_factor, num_threads, spherical);
-      tsne.run(nn_dex.begin(), nn_dist.begin(), N, K, Y.data(), costs.data(), itercosts.data());
+      tsne.run(nn_dex.begin(), nn_dist.begin(), N, K, Y.data(), costs.data(), itercosts.data(), spherical);
     } else if (no_dims==3) {
       TSNE<3> tsne(perplexity, theta, verbose, max_iter, init, stop_lying_iter, mom_switch_iter, 
               momentum, final_momentum, eta, exaggeration_factor, num_threads, spherical);
-      tsne.run(nn_dex.begin(), nn_dist.begin(), N, K, Y.data(), costs.data(), itercosts.data());
+      tsne.run(nn_dex.begin(), nn_dist.begin(), N, K, Y.data(), costs.data(), itercosts.data(), spherical);
     } else {
       Rcpp::stop("Only 1, 2 or 3 dimensional output is suppported.\n");
     }
