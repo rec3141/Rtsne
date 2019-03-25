@@ -46,12 +46,12 @@ public:
     TSNE(double perplexity, double theta, bool verbose, int max_iter, bool init, int stop_lying_iter, 
        int mom_switch_iter, double momentum, double final_momentum, double eta, double exaggeration_factor,int num_threads, bool spherical);
 
-    void run(double* X, unsigned int N, int D, double* Y, bool distance_precomputed, double* cost, double* itercost);
+    void run(double* X, unsigned int N, int D, double* Y, bool distance_precomputed, double* cost, double* itercost, spherical);
     void run(const int* nn_index, const double* nn_dist, unsigned int N, int K, double* Y, double* cost, double* itercost, bool spherical);
 
 private:
     void symmetrizeMatrix(unsigned int N); 
-    void trainIterations(unsigned int N, double* Y, double* cost, double* itercost);
+    void trainIterations(unsigned int N, double* Y, double* cost, double* itercost, bool spherical);
 
     void computeGradient(double* P, unsigned int* inp_row_P, unsigned int* inp_col_P, double* inp_val_P, double* Y, unsigned int N, int D, double* dC, double theta);
     void computeExactGradient(double* P, double* Y, unsigned int N, int D, double* dC);
