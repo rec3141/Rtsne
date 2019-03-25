@@ -864,7 +864,7 @@ template <int NDims>
 void TSNE<NDims>::spherembed(double* X, unsigned int N, int D) {
 
 	// square data
-   for(unsigned int i = 0; i < N * D; i++) X[d] = X[d]*X[d];
+   for(unsigned int i = 0; i < N * D; i++) X[i] = X[i]*X[i];
    
 	// row sums
 	double* rowsum = (double*) calloc(D, sizeof(double));
@@ -883,15 +883,15 @@ void TSNE<NDims>::spherembed(double* X, unsigned int N, int D) {
   // Compute rowsum mean
   double* r_mean = 0;
   for(int d = 0; d < D; d++) {
-	r_mean += rowsum[d];
+	r_mean = r_mean + rowsum[d];
   }
-  r_mean /= (double) N;
+  r_mean = r_mean / (double) N;
 
 	double* rsm = (double*) calloc(D, sizeof(double));
 	rsm = r_mean;
 
   for(int d = 0; d < D; d++) {
-	rsm[d] = rsm/rowsum[d];
+	rsm[d] = rsm[d] / rowsum[d];
   }
 	
 	
