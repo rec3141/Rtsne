@@ -888,7 +888,6 @@ void TSNE<NDims>::spherembed(double* X, unsigned int N, int D) {
   r_mean = r_mean / (double) N;
 
 	double* rsm = (double*) calloc(D, sizeof(double));
-	rsm = r_mean;
 
   for(int d = 0; d < D; d++) {
 	rsm[d] = rsm[d] / rowsum[d];
@@ -904,9 +903,6 @@ void TSNE<NDims>::spherembed(double* X, unsigned int N, int D) {
     nD += D;
   }
 
-  free(r_mean); r_mean = NULL;
-  free(rsm); rsm = NULL;
-  free(rowsum); rowsum = NULL;
 }
 
 
