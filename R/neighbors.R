@@ -1,6 +1,6 @@
-#' @rdname Rtsne
+#' @rdname Rtsnesphere
 #' @export
-Rtsne_neighbors <- function(index, distance, dims=2, perplexity=30, theta=0.5,
+Rtsnesphere_neighbors <- function(index, distance, dims=2, perplexity=30, theta=0.5,
         max_iter=1000,verbose=getOption("verbose", FALSE),
         Y_init=NULL,
         stop_lying_iter=ifelse(is.null(Y_init),250L,0L),
