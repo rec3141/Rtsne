@@ -5,7 +5,7 @@
 
 using namespace Rcpp;
 
-// Rtsne_cpp
+// Rtsnesphere_cpp
 Rcpp::List Rtsnesphere_cpp(NumericMatrix X, int no_dims, double perplexity, double theta, bool verbose, int max_iter, bool distance_precomputed, NumericMatrix Y_in, bool init, int stop_lying_iter, int mom_switch_iter, double momentum, double final_momentum, double eta, double exaggeration_factor, unsigned int num_threads, bool spherical);
 RcppExport SEXP _Rtsnesphere_Rtsnesphere_cpp(SEXP XSEXP, SEXP no_dimsSEXP, SEXP perplexitySEXP, SEXP thetaSEXP, SEXP verboseSEXP, SEXP max_iterSEXP, SEXP distance_precomputedSEXP, SEXP Y_inSEXP, SEXP initSEXP, SEXP stop_lying_iterSEXP, SEXP mom_switch_iterSEXP, SEXP momentumSEXP, SEXP final_momentumSEXP, SEXP etaSEXP, SEXP exaggeration_factorSEXP, SEXP num_threadsSEXP, SEXP sphericalSEXP) {
 BEGIN_RCPP
@@ -32,7 +32,7 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// Rtsne_nn_cpp
+// Rtsnesphere_nn_cpp
 Rcpp::List Rtsnesphere_nn_cpp(IntegerMatrix nn_dex, NumericMatrix nn_dist, int no_dims, double perplexity, double theta, bool verbose, int max_iter, NumericMatrix Y_in, bool init, int stop_lying_iter, int mom_switch_iter, double momentum, double final_momentum, double eta, double exaggeration_factor, unsigned int num_threads, bool spherical);
 RcppExport SEXP _Rtsnesphere_Rtsnesphere_nn_cpp(SEXP nn_dexSEXP, SEXP nn_distSEXP, SEXP no_dimsSEXP, SEXP perplexitySEXP, SEXP thetaSEXP, SEXP verboseSEXP, SEXP max_iterSEXP, SEXP Y_inSEXP, SEXP initSEXP, SEXP stop_lying_iterSEXP, SEXP mom_switch_iterSEXP, SEXP momentumSEXP, SEXP final_momentumSEXP, SEXP etaSEXP, SEXP exaggeration_factorSEXP, SEXP num_threadsSEXP, SEXP sphericalSEXP) {
 BEGIN_RCPP
@@ -78,7 +78,7 @@ static const R_CallMethodDef CallEntries[] = {
     {NULL, NULL, 0}
 };
 
-RcppExport void R_init_Rtsne(DllInfo *dll) {
+RcppExport void R_init_Rtsnesphere(DllInfo *dll) {
     R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
     R_useDynamicSymbols(dll, FALSE);
 }
