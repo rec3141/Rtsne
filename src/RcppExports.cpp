@@ -28,7 +28,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< double >::type exaggeration_factor(exaggeration_factorSEXP);
     Rcpp::traits::input_parameter< unsigned int >::type num_threads(num_threadsSEXP);
     Rcpp::traits::input_parameter< bool >::type spherical(sphericalSEXP);
-    rcpp_result_gen = Rcpp::wrap(Rtsne_cpp(X, no_dims, perplexity, theta, verbose, max_iter, distance_precomputed, Y_in, init, stop_lying_iter, mom_switch_iter, momentum, final_momentum, eta, exaggeration_factor, num_threads, spherical));
+    rcpp_result_gen = Rcpp::wrap(Rtsnesphere_cpp(X, no_dims, perplexity, theta, verbose, max_iter, distance_precomputed, Y_in, init, stop_lying_iter, mom_switch_iter, momentum, final_momentum, eta, exaggeration_factor, num_threads, spherical));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -61,7 +61,7 @@ END_RCPP
 }
 // normalize_input_cpp
 Rcpp::NumericMatrix normalize_input_cpp(Rcpp::NumericMatrix input);
-RcppExport SEXP _Rtsne_normalize_input_cpp(SEXP inputSEXP) {
+RcppExport SEXP _Rtsnesphere_normalize_input_cpp(SEXP inputSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -72,9 +72,9 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_Rtsne_Rtsne_cpp", (DL_FUNC) &_Rtsnesphere_Rtsnesphere_cpp, 16},
-    {"_Rtsne_Rtsne_nn_cpp", (DL_FUNC) &_Rtsnesphere_Rtsnesphere_nn_cpp, 16},
-    {"_Rtsne_normalize_input_cpp", (DL_FUNC) &_Rtsnesphere_normalize_input_cpp, 1},
+    {"_Rtsnesphere_Rtsnesphere_cpp", (DL_FUNC) &_Rtsnesphere_Rtsnesphere_cpp, 16},
+    {"_Rtsnesphere_Rtsnesphere_nn_cpp", (DL_FUNC) &_Rtsnesphere_Rtsnesphere_nn_cpp, 16},
+    {"_Rtsnesphere_normalize_input_cpp", (DL_FUNC) &_Rtsnesphere_normalize_input_cpp, 1},
     {NULL, NULL, 0}
 };
 
