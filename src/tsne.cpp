@@ -60,7 +60,7 @@ TSNE<NDims>::TSNE(double Perplexity, double Theta, bool Verbose, int Max_iter, b
         int Mom_switch_iter, double Momentum, double Final_momentum, double Eta, double Exaggeration_factor, int Num_threads, bool Spherical) :
     perplexity(Perplexity), theta(Theta), momentum(Momentum), final_momentum(Final_momentum), eta(Eta), exaggeration_factor(Exaggeration_factor),
     max_iter(Max_iter), stop_lying_iter(Stop_lying_iter), mom_switch_iter(Mom_switch_iter), num_threads(Num_threads), 
-    verbose(Verbose), init(Init), spherical(Spherical), exact(theta==.0) {
+    verbose(Verbose), init(Init), exact(theta==.0), spherical(Spherical) {
 
     #ifdef _OPENMP
       int threads = num_threads;
