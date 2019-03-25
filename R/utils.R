@@ -35,7 +35,7 @@ is.wholenumber <- function(x, tol = .Machine$double.eps^0.5)
 }
 
 .check_tsne_params <- function(nsamples, dims, perplexity, theta, max_iter, verbose, Y_init, stop_lying_iter, mom_switch_iter,
-    momentum, final_momentum, eta, exaggeration_factor)
+    momentum, final_momentum, eta, exaggeration_factor, spherical)
 # Checks parameters for the t-SNE algorithm that are independent of
 # the format of the input data (e.g., distance matrix or neighbors).
 {
@@ -65,7 +65,7 @@ is.wholenumber <- function(x, tol = .Machine$double.eps^0.5)
         init=init, Y_in=Y_init,
         stop_lying_iter=stop_lying_iter, mom_switch_iter=mom_switch_iter,
         momentum=momentum, final_momentum=final_momentum,
-        eta=eta, exaggeration_factor=exaggeration_factor)
+        eta=eta, exaggeration_factor=exaggeration_factor, spherical=spherical)
 }
 
 .clear_unwanted_params <- function(args)
