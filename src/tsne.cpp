@@ -817,9 +817,9 @@ void TSNE<NDims>::computeSquaredEuclideanDistanceDirect(double* X, unsigned int 
 // Makes data zero-mean
 template <int NDims>
 void TSNE<NDims>::zeroMean(double* X, unsigned int N, int D) {
-	
-	// Compute data mean
-	double* mean = (double*) calloc(D, sizeof(double));
+
+  // Compute data mean
+  double* mean = (double*) calloc(D, sizeof(double));
   if(mean == NULL) {  Rcpp::stop("Memory allocation failed!\n"); }
   int nD = 0;
   for(unsigned int n = 0; n < N; n++) {
@@ -862,29 +862,25 @@ double TSNE<NDims>::randn() {
 // Spherical Embedding
 template <int NDims>
 void TSNE<NDims>::spherembed(double* X, unsigned int N, int D) {
-
-	// square data
-   for(unsigned int i = 0; i < N * D; i++) X[i] = X[i]*X[i];
    
-	// row sums, rows are observations, cols are dimensions
-	double* rowsum = (double*) calloc(N, sizeof(double));
-	int nD = 0;
-	  for(unsigned int n = 0; n < N; n++) {
-		for(int d = 0; d < D; d++) {
-		  rowsum[n] += X[nD + d];
-		}
-		nD += D;
-		rowsum[n] = sqrt(rowsum[n]);
-	  }
+   // row sums, rows are observations, cols are dimensions
+   double* rowsum = (double*) calloc(N, sizeof(double));
+   int nD = 0;
+   for(unsigned int n = 0; n < N; n++) {
+	for(int d = 0; d < D; d++) {
+	  rowsum[n] += (X[nD + d] * X[nD + d]);
+	}
+	nD += D;
+   }
 
   // Compute rowsum mean
   double r_mean = 0;
   for(unsigned int n = 0; n < N; n++) {
-	r_mean = r_mean + rowsum[n];
+	r_mean = r_mean + sqrt(rowsum[n]);
   }
   r_mean = r_mean / (double) N;
 
-double* rsm = (double*) calloc(N, sizeof(double));
+  double* rsm = (double*) calloc(N, sizeof(double));
   for(unsigned int n = 0; n < N; n++) {
 	rsm[n] = r_mean / rowsum[n];
   }
