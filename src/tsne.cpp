@@ -204,7 +204,7 @@ void TSNE<NDims>::trainIterations(unsigned int N, double* Y, double* cost, doubl
         zeroMean(Y, N, NDims);
 
 	// Do Spherical Embedding
-	if(spherical == true) {
+	if(spherical) {
 	  spherembed(Y, N, NDims);
 	}
 	
@@ -866,38 +866,36 @@ void TSNE<NDims>::spherembed(double* X, unsigned int N, int D) {
 	// square data
    for(unsigned int i = 0; i < N * D; i++) X[i] = X[i]*X[i];
    
-	// row sums
-	double* rowsum = (double*) calloc(D, sizeof(double));
+	// row sums, rows are dimensions D
+	double* rowsum = (double*) calloc(N, sizeof(double));
 	int nD = 0;
 	  for(unsigned int n = 0; n < N; n++) {
 		for(int d = 0; d < D; d++) {
-		  rowsum[d] += X[nD + d];
+		  rowsum[n] += X[nD + d];
 		}
 		nD += D;
+		rowsum[n] = sqrt(rowsum[n]);
 	  }
-
-  for(int d = 0; d < D; d++) {
-	rowsum[d] = sqrt(rowsum[d]);
-  }
 
   // Compute rowsum mean
   double r_mean = 0;
-  for(int d = 0; d < D; d++) {
-	r_mean = r_mean + rowsum[d];
+  for(unsigned int n = 0; n < N; n++) {
+	r_mean = r_mean + rowsum[n];
   }
   r_mean = r_mean / (double) N;
 
+
   double* rsm = (double*) calloc(D, sizeof(double));
 
-  for(int d = 0; d < D; d++) {
-	rsm[d] = r_mean / rowsum[d];
+  for(unsigned int n = 0; n < N; n++) {
+	rsm[n] = r_mean / rowsum[n];
   }
 
   // Compute sweep
   nD = 0;
   for(unsigned int n = 0; n < N; n++) {
     for(int d = 0; d < D; d++) {
-      X[nD + d] = X[nD + d] * rsm[d];
+      X[nD + d] = X[nD + d] * rsm[n];
     }
     nD += D;
   }
